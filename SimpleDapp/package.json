@@ -1,0 +1,22 @@
+{
+  "name": "simpledapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.4.0",
+    "ganache-cli": "^6.12.2",
+    "solc": "^0.5.17",
+    "truffle-hdwallet-provider": "^1.0.0-web3one.5",
+    "web3": "^1.2.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node_modules/.bin/ganache-cli"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Greetings</title>
+</head>
+<body>
+<div class="row">
+    <h1 id="greeting">&nbsp;</h1>
+    <form role="form">
+        <input name="greeting">
+        </input>
+        <button type="submit">Записать</button>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+<script>
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider)
+    } else {
+        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
+    }
+    window.ethereum.enable();
+
+    var contractAbi = [
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "greet",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "_greetings",
+                    "type": "string"
+                }
+            ],
+            "name": "setGreetings",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ]
+    var contractAddress = '0xE2fA6Be97D262fcE2C0841EF4c2906ed894F0a7b' // Вставьте здесь адрес вашего контракта!
+    var contract = new web3.eth.Contract(contractAbi, contractAddress) // Отображает приветствие
+    contract.methods.greet().call(function (err, result) {
+        console.log(err, result)
+        $('#greeting').html(result)
+    })
+    // Изменяет приветствие
+    $('form').on('submit', function (event) {
+        event.preventDefault()
+        greeting = $('input').val()
+        console.log(greeting)
+        web3.eth.getAccounts().then(function (accounts) {
+            console.log(accounts)
+            contract.methods.setGreetings(greeting).send({ from: accounts[0] })
+        })
+    })
+</script>
+</body>
+</html>
